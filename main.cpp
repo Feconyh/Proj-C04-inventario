@@ -137,3 +137,8 @@ int main()
 	return 0;
 }
 
+// João Vitor Souza Aldet - 660 - GES
+//Lucas Naressi Guerra - 588 - GES
+//Carlos Eduardo Carvalho Vilas Boas - 441 - GES
+//Tales Henrique Moreira Carvalho - 518 - GES
+//?
