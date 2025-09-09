@@ -34,11 +34,7 @@ void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como ref
 }
 void define_related(itens Itens[], int &n_itens)
 {
-	for(int i = 0; i < n_itens; i++){
-        cin >> 
-		listas_adj[].push_back({Itens[n_itens].id, Itens[n_itens].rarity});
-        listas_adj[].push_back({, Itens[n_itens].rarity});
-    }
+	grafo(itens Itens[], int &n_itens);
 	cout << "Funcionalidade em construção.\n";
 }
 void search_related()
@@ -167,6 +163,7 @@ int main()
 //Carlos Eduardo Carvalho Vilas Boas - 441 - GES
 //Tales Henrique Moreira Carvalho - 518 - GES
 //Felipe Lamy Rosa Rennó - 507 - GES
+
 
 
 
