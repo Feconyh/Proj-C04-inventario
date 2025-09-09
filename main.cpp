@@ -21,9 +21,12 @@ void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como ref
 	cout << "Quem é o dono do item: ";
 	getline(cin, Itens[n_itens].owner); // input dono do item
 
-	cout << "Qual é a propriedade magica: ";
+	cout << "Qual é a propriedade mágica: ";
 	getline(cin, Itens[n_itens].property); // input propriedade magica
 
+    cout << "Qual é o número de identificação: ";
+	cin >> Itens[n_itens].id; // input numero de identificação
+	
 	cout << "Qual é a raridade: ";
 	cin >> Itens[n_itens].rarity; // input raridade (0 a 100)
 
@@ -143,6 +146,7 @@ int main()
 //Carlos Eduardo Carvalho Vilas Boas - 441 - GES
 //Tales Henrique Moreira Carvalho - 518 - GES
 //Felipe Lamy Rosa Rennó - 507 - GES
+
 
 
 
