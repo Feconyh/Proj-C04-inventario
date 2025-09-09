@@ -14,8 +14,8 @@ struct itens{
 
 void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como referencia
 {
-	cout << "Nome do item: ";
-	cin.ignore();
+		cout << "Nome do item: ";
+		cin.ignore();
 	getline(cin, Itens[n_itens].name); // input nome do item
 
 	cout << "Quem é o dono do item: ";
@@ -32,8 +32,13 @@ void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como ref
 
 	n_itens++; // incremento
 }
-void define_related()
+void define_related(itens Itens[], int &n_itens)
 {
+	for(int i = 0; i < n_itens; i++){
+        cin >> 
+		listas_adj[].push_back({Itens[n_itens].id, Itens[n_itens].rarity});
+        listas_adj[].push_back({, Itens[n_itens].rarity});
+    }
 	cout << "Funcionalidade em construção.\n";
 }
 void search_related()
@@ -146,6 +151,7 @@ int main()
 //Carlos Eduardo Carvalho Vilas Boas - 441 - GES
 //Tales Henrique Moreira Carvalho - 518 - GES
 //Felipe Lamy Rosa Rennó - 507 - GES
+
 
 
 
