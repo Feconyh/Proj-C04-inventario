@@ -8,6 +8,7 @@ struct itens{
 	string name;
 	string owner;
 	string property;
+    int id;
 	int rarity;
 };
 
@@ -142,5 +143,6 @@ int main()
 //Carlos Eduardo Carvalho Vilas Boas - 441 - GES
 //Tales Henrique Moreira Carvalho - 518 - GES
 //Felipe Lamy Rosa Rennó - 507 - GES
+
 
 
