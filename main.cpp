@@ -86,6 +86,22 @@ void remove_common()
 	cout << "Funcionalidade em construção.\n";
 }
 
+void grafo(itens Itens[], int &n_itens)
+{
+	int similarity_itens[&n_itens][&n_itens];
+	for(int i = 0; i < n_itens; i++){
+		for(int j = 0; j < n_itens; j++){
+			if(Itens[i].rarity > itens[j].rarity){
+				similarity_itens[i][j] = Itens[i].rarity - itens[j].rarity
+			}
+			else
+			{
+				similarity_itens[i][j] = Itens[j].rarity - itens[i].rarity
+			}
+		}
+	}
+}
+
 void menu()
 {
 	cout << "Menu:\n" << "0 - Sair\n"
@@ -151,6 +167,7 @@ int main()
 //Carlos Eduardo Carvalho Vilas Boas - 441 - GES
 //Tales Henrique Moreira Carvalho - 518 - GES
 //Felipe Lamy Rosa Rennó - 507 - GES
+
 
 
 
