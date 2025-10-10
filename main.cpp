@@ -1,6 +1,9 @@
 #include <iostream>
+#include <list>
 #include <string>
 #include <locale>
+
+#define MAXV 1000
 
 using namespace std;
 
@@ -12,10 +15,25 @@ struct itens{
 	int rarity;
 };
 
+struct Aresta{
+	int origem, destino, peso;
+};
+
+void grafo(list<Aresta> listas_adj[], int arestas)
+{
+	int origem, destino, similaridade;
+	cout << "Insira o código de origem da similaridade, depois o de destino e por último a similaridade.\n";
+	for (int i = 0; i < arestas; i++) {
+		cin >> origem >> destino >> similaridade;
+		listas_adj[origem].push_back({origem, destino, similaridade});
+		listas_adj[destino].push_back({destino, origem, similaridade});
+	}
+}
+
 void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como referencia
 {
-		cout << "Nome do item: ";
-		cin.ignore();
+	cout << "Nome do item: ";
+	cin.ignore();
 	getline(cin, Itens[n_itens].name); // input nome do item
 
 	cout << "Quem é o dono do item: ";
@@ -26,21 +44,64 @@ void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como ref
 
     cout << "Qual é o número de identificação: ";
 	cin >> Itens[n_itens].id; // input numero de identificação
-	
+
 	cout << "Qual é a raridade: ";
 	cin >> Itens[n_itens].rarity; // input raridade (0 a 100)
 
 	n_itens++; // incremento
 }
-void define_related(itens Itens[], int &n_itens)
+void define_related(list<Aresta> listas_adj[], int arestas)
 {
-	grafo(itens Itens[], int &n_itens);
-	cout << "Funcionalidade em construção.\n";
+	grafo(listas_adj, arestas);
+
+	list<Aresta>::iterator it;
+	cout << "Lista de similaridades:" << endl;
+
+	for (int i = 0; i < MAXV; i++) {
+		if (!listas_adj[i].empty()) {
+			cout << i << ": ";
+			for (it = listas_adj[i].begin(); it != listas_adj[i].end(); ++it) {
+				cout << "(" << it->destino + 1 << ", " << it->peso << ") ";
+			}
+			cout << std::endl;
+		}
+	}
 }
-void search_related()
+
+void search_related(list<Aresta> listas_adj[],
+					itens Itens[],
+					int vertices,
+					int origem,
+					int similaridade_min)
 {
-	cout << "Funcionalidade em construção.\n";
+	bool visitado[MAXV] = {false};
+
+	list<Aresta>::iterator it;
+	for (it = listas_adj[origem].begin(); it != listas_adj[origem].end(); ++it)
+	{
+		if (origem < 0 || origem >= vertices) {
+			std::cout << "Origem invalida.\n";
+			return;
+		}
+		if (it->peso >= similaridade_min) {
+			int v = it->destino;
+
+			if (v >= 0 && v < vertices) {
+				if (Itens[v].owner == Itens[origem].owner && !visitado[v]) {
+					visitado[v] = true;
+
+					cout << "Item " << v << '\n'
+							  << "Nome: " << Itens[v].name << '\n'
+							  << "Dono: " << Itens[v].owner << '\n'
+							  << "Propriedade Mágica: " << Itens[v].property << '\n'
+							  << "Raridade: " << Itens[v].rarity << "\n\n";
+				}
+			}
+		}
+	}
 }
+
+
 void search(itens Itens[], int &n_itens, string search_name) // Faz a busca de um item pelo seu nome
 {
 	for(int i = 0; i < n_itens; i++)
@@ -82,22 +143,6 @@ void remove_common()
 	cout << "Funcionalidade em construção.\n";
 }
 
-void grafo(itens Itens[], int &n_itens)
-{
-	int similarity_itens[&n_itens][&n_itens];
-	for(int i = 0; i < n_itens; i++){
-		for(int j = 0; j < n_itens; j++){
-			if(Itens[i].rarity > itens[j].rarity){
-				similarity_itens[i][j] = Itens[i].rarity - itens[j].rarity
-			}
-			else
-			{
-				similarity_itens[i][j] = Itens[j].rarity - itens[i].rarity
-			}
-		}
-	}
-}
-
 void menu()
 {
 	cout << "Menu:\n" << "0 - Sair\n"
@@ -110,26 +155,33 @@ void menu()
 int main()
 {
 	setlocale(LC_ALL, "Portuguese");
-	
+
 	itens Itens[1000];
+	list<Aresta> listas_adj[MAXV];
 
 	int control;
 	int n_itens = 0;
 	string search_name;
-	
+
+	int vertices, arestas, origem, destino, peso, simmin, codigo;
+
 	menu();
 	while(cin >> control && control != 0)
 	{
 		switch (control)
-		{		 
+		{
 			case 1:
 				insert(Itens,n_itens);
 				break;
 			case 2:
-				define_related();
-				break;	
+				cout << "Quantas relações(Arestas) gostaria de inserir?" << endl;
+				cin >> arestas;
+				define_related(listas_adj, arestas);
+				break;
 			case 3:
-				search_related();
+				cout << "Insira qual item gostaria de comparar e a similaridade minima\n";
+				cin >> codigo >> simmin;
+				search_related(listas_adj, Itens, n_itens, codigo, simmin);
 				break;
 			case 4:
 				cout << "Item que está procurando: ";
