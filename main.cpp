@@ -7,7 +7,7 @@
 
 using namespace std;
 
-struct itens{
+struct Itens{
 	string name;
 	string owner;
 	string property;
@@ -30,7 +30,7 @@ void grafo(list<Aresta> listas_adj[], int arestas)
 	}
 }
 
-void insert(itens Itens[], int &n_itens) // & para usar a var "n_itens" como referencia
+void insert(Itens itens[], int &n_itens) // & para usar a var "n_itens" como referencia
 {
 	cout << "Nome do item: ";
 	cin.ignore();
@@ -69,7 +69,7 @@ void define_related(list<Aresta> listas_adj[], int arestas)
 }
 
 void search_related(list<Aresta> listas_adj[],
-					itens Itens[],
+					Itens itens[],
 					int vertices,
 					int origem,
 					int similaridade_min)
@@ -80,21 +80,21 @@ void search_related(list<Aresta> listas_adj[],
 	for (it = listas_adj[origem].begin(); it != listas_adj[origem].end(); ++it)
 	{
 		if (origem < 0 || origem >= vertices) {
-			std::cout << "Origem invalida.\n";
+			cout << "Origem invalida.\n";
 			return;
 		}
 		if (it->peso >= similaridade_min) {
 			int v = it->destino;
 
 			if (v >= 0 && v < vertices) {
-				if (Itens[v].owner == Itens[origem].owner && !visitado[v]) {
+				if (itens[v].owner == itens[origem].owner && !visitado[v]) {
 					visitado[v] = true;
 
 					cout << "Item " << v << '\n'
-							  << "Nome: " << Itens[v].name << '\n'
-							  << "Dono: " << Itens[v].owner << '\n'
-							  << "Propriedade Mágica: " << Itens[v].property << '\n'
-							  << "Raridade: " << Itens[v].rarity << "\n\n";
+							  << "Nome: " << itens[v].name << '\n'
+							  << "Dono: " << itens[v].owner << '\n'
+							  << "Propriedade Mágica: " << itens[v].property << '\n'
+							  << "Raridade: " << itens[v].rarity << "\n\n";
 				}
 			}
 		}
@@ -102,31 +102,31 @@ void search_related(list<Aresta> listas_adj[],
 }
 
 
-void search(itens Itens[], int &n_itens, string search_name) // Faz a busca de um item pelo seu nome
+void search(Itens itens[], int &n_itens, string search_name) // Faz a busca de um item pelo seu nome
 {
 	for(int i = 0; i < n_itens; i++)
 	{
 		if(Itens[i].name == search_name){
 			cout << "Item " << i << endl;
-			cout << "Nome: " << Itens[i].name << endl;
-			cout << "Dono: " << Itens[i].owner << endl;
-			cout << "Propriedade Magica: " << Itens[i].property << endl;
-			cout << "Raridade: " << Itens[i].rarity << endl;
+			cout << "Nome: " << itens[i].name << endl;
+			cout << "Dono: " << itens[i].owner << endl;
+			cout << "Propriedade Magica: " << itens[i].property << endl;
+			cout << "Raridade: " << itens[i].rarity << endl;
 			cout << endl;
 		}
 	}
 
 }
-void list_alpha(itens Itens[], int &n_itens) // Fazer em ordem alfabetica (incompleto)
+void list_alpha(Itens itens[], int &n_itens) // Fazer em ordem alfabetica (incompleto)
 {
 	// lista todos itens, na ordem cadastrada !
 	for(int i = 0; i < n_itens; i++)
 	{
 		cout << "Item " << i << endl;
-		cout << "Nome: " << Itens[i].name << endl;
-		cout << "Dono: " << Itens[i].owner << endl;
-		cout << "Propriedade Magica: " << Itens[i].property << endl;
-		cout << "Raridade: " << Itens[i].rarity << endl;
+		cout << "Nome: " << itens[i].name << endl;
+		cout << "Dono: " << itens[i].owner << endl;
+		cout << "Propriedade Magica: " << itens[i].property << endl;
+		cout << "Raridade: " << itens[i].rarity << endl;
 		cout << endl;
 	}
 }
@@ -156,7 +156,7 @@ int main()
 {
 	setlocale(LC_ALL, "Portuguese");
 
-	itens Itens[1000];
+	Itens itens[1000];
 	list<Aresta> listas_adj[MAXV];
 
 	int control;
@@ -171,7 +171,7 @@ int main()
 		switch (control)
 		{
 			case 1:
-				insert(Itens,n_itens);
+				insert(itens,n_itens);
 				break;
 			case 2:
 				cout << "Quantas relações(Arestas) gostaria de inserir?" << endl;
@@ -181,16 +181,16 @@ int main()
 			case 3:
 				cout << "Insira qual item gostaria de comparar e a similaridade minima\n";
 				cin >> codigo >> simmin;
-				search_related(listas_adj, Itens, n_itens, codigo, simmin);
+				search_related(listas_adj, itens, n_itens, codigo, simmin);
 				break;
 			case 4:
 				cout << "Item que está procurando: ";
 				cin.ignore();
 				getline(cin, search_name);
-				search(Itens, n_itens, search_name);
+				search(itens, n_itens, search_name);
 				break;
 			case 5:
-				list_alpha(Itens, n_itens);
+				list_alpha(itens, n_itens);
 				break;
 			case 6:
 				list_rarity();
@@ -215,6 +215,7 @@ int main()
 //Carlos Eduardo Carvalho Vilas Boas - 441 - GES
 //Tales Henrique Moreira Carvalho - 518 - GES
 //Felipe Lamy Rosa Rennó - 507 - GES
+
 
 
 
