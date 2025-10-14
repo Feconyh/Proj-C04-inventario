@@ -32,21 +32,21 @@ void grafo(list<Aresta> listas_adj[], int arestas)
 
 void insert(Itens itens[], int &n_itens) // & para usar a var "n_itens" como referencia
 {
-	cout << "Nome do item: ";
+	cout << "Nome do item: \n";
 	cin.ignore();
-	getline(cin, Itens[n_itens].name); // input nome do item
+	getline(cin, itens[n_itens].name); // input nome do item
 
-	cout << "Quem é o dono do item: ";
-	getline(cin, Itens[n_itens].owner); // input dono do item
+	cout << "Quem e o dono do item: \n";
+	getline(cin, itens[n_itens].owner); // input dono do item
 
-	cout << "Qual é a propriedade mágica: ";
-	getline(cin, Itens[n_itens].property); // input propriedade magica
+	cout << "Qual a propriedade magica: \n";
+	getline(cin, itens[n_itens].property); // input propriedade magica
 
-    cout << "Qual é o número de identificação: ";
-	cin >> Itens[n_itens].id; // input numero de identificação
+    cout << "Qual o numero de identificacao: \n";
+	cin >> itens[n_itens].id; // input numero de identificação
 
-	cout << "Qual é a raridade: ";
-	cin >> Itens[n_itens].rarity; // input raridade (0 a 100)
+	cout << "Qual a raridade: \n";
+	cin >> itens[n_itens].rarity; // input raridade (0 a 100)
 
 	n_itens++; // incremento
 }
@@ -72,7 +72,8 @@ void search_related(list<Aresta> listas_adj[],
 					Itens itens[],
 					int vertices,
 					int origem,
-					int similaridade_min)
+					int similaridade_min,
+					string jogador_j)
 {
 	bool visitado[MAXV] = {false};
 
@@ -87,7 +88,7 @@ void search_related(list<Aresta> listas_adj[],
 			int v = it->destino;
 
 			if (v >= 0 && v < vertices) {
-				if (itens[v].owner == itens[origem].owner && !visitado[v]) {
+				if (itens[v].owner != jogador_j && !visitado[v]) {
 					visitado[v] = true;
 
 					cout << "Item " << v << '\n'
@@ -106,7 +107,7 @@ void search(Itens itens[], int &n_itens, string search_name) // Faz a busca de u
 {
 	for(int i = 0; i < n_itens; i++)
 	{
-		if(Itens[i].name == search_name){
+		if(itens[i].name == search_name){
 			cout << "Item " << i << endl;
 			cout << "Nome: " << itens[i].name << endl;
 			cout << "Dono: " << itens[i].owner << endl;
@@ -161,7 +162,7 @@ int main()
 
 	int control;
 	int n_itens = 0;
-	string search_name;
+	string search_name, jogador_j;
 
 	int vertices, arestas, origem, destino, peso, simmin, codigo;
 
@@ -179,9 +180,9 @@ int main()
 				define_related(listas_adj, arestas);
 				break;
 			case 3:
-				cout << "Insira qual item gostaria de comparar e a similaridade minima\n";
-				cin >> codigo >> simmin;
-				search_related(listas_adj, itens, n_itens, codigo, simmin);
+				cout << "Insira qual jogador nao deve estar incluido, qual item gostaria de comparar e a similaridade minima respectivamente\n";
+				cin >> jogador_j >>codigo >> simmin;
+				search_related(listas_adj, itens, n_itens, codigo, simmin,jogador_j);
 				break;
 			case 4:
 				cout << "Item que está procurando: ";
