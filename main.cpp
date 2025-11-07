@@ -1,4 +1,5 @@
 #include <iostream>
+#include <complex>
 #include <list>
 #include <string>
 #include <locale>
@@ -15,9 +16,120 @@ struct Itens{
 	int rarity;
 };
 
+typedef int KeyType;
+typedef Itens ValueType;
+
+struct Datatype {
+  KeyType key;
+  ValueType value;
+};
+
+struct Node {
+  Datatype data;
+  Node *left;
+  Node *right;
+};
+
 struct Aresta{
 	int origem, destino, peso;
 };
+
+void insertBTree(Node * & curr, Datatype data) {
+  if (curr == NULL) {
+    curr = new Node;
+    curr->data = data;
+    curr->left = NULL;
+    curr->right = NULL;
+  } else if (data.key < curr->data.key) {
+    insertBTree(curr->left, data);
+  } else {
+    insertBTree(curr->right, data);
+  }
+}
+
+Node * searchBTree(Node * curr, int key) {
+  if (curr == NULL) {
+    return NULL;
+  } else if (key == curr->data.key) {
+    return curr;
+  } else if (key < curr->data.key) {
+    return searchBTree(curr->left, key);
+  } else {
+    return searchBTree(curr->right, key);
+  }
+}
+
+Node * search_less_point_right(Node * & curr) {
+  Node * temp = curr;
+  if (curr->left == NULL) {
+    curr = curr->right;
+    return temp;
+  } else {
+    return search_less_point_right(curr->left);
+  }
+}
+
+bool removeBTree(Node * & curr, int key) {
+  if (curr == NULL) {
+    return false;
+  } else if (key == curr->data.key) {
+    Node * temp = curr;
+    if (curr->left == NULL) {
+      curr = curr->right;
+    } else if (curr->right == NULL) {
+      curr = curr->left;
+    } else {
+      temp = search_less_point_right(curr->right);
+      curr->data = temp->data;
+    }
+    delete temp;
+    return true;
+  } else if (key < curr->data.key) {
+    return removeBTree(curr->left, key);
+  } else {
+    return removeBTree(curr->right, key);
+  }
+}
+
+void print_value(ValueType value) {
+	cout << value.name << endl;
+}
+
+void in_order(Node * curr) {
+  if (curr != NULL) {
+    in_order(curr->left);
+    print_value(curr->data.value);
+    in_order(curr->right);
+  }
+}
+
+
+void in_level(Node * curr) {
+  if (curr == NULL) {
+    return;
+  }
+  list<Node*> fila_visitacao;
+  fila_visitacao.push_back(curr);
+  while (!fila_visitacao.empty()) {
+    curr = fila_visitacao.front();
+    fila_visitacao.pop_front();
+    print_value(curr->data.value);
+    if (curr->left != NULL) {
+      fila_visitacao.push_back(curr->left);
+    }
+    if (curr->right != NULL) {
+      fila_visitacao.push_back(curr->right);
+    }
+  }
+}
+
+void destruct(Node *& curr) {
+  if (curr != NULL) {
+    destruct(curr->left);
+    destruct(curr->right);
+    delete curr;
+  }
+}
 
 void grafo(list<Aresta> listas_adj[], int arestas)
 {
@@ -30,7 +142,7 @@ void grafo(list<Aresta> listas_adj[], int arestas)
 	}
 }
 
-void insert(Itens itens[], int &n_itens) // & para usar a var "n_itens" como referencia
+void insert(Itens itens[], int &n_itens, Node * root) // & para usar a var "n_itens" como referencia
 {
 	cout << "Nome do item: \n";
 	cin.ignore();
@@ -49,6 +161,8 @@ void insert(Itens itens[], int &n_itens) // & para usar a var "n_itens" como ref
 	cin >> itens[n_itens].rarity; // input raridade (0 a 100)
 
 	n_itens++; // incremento
+
+	insertBTree(root , {itens[n_itens].rarity,itens[n_itens]});
 }
 void define_related(list<Aresta> listas_adj[], int arestas)
 {
@@ -158,6 +272,7 @@ int main()
 	setlocale(LC_ALL, "Portuguese");
 
 	Itens itens[1000];
+	Node * root = NULL;
 	list<Aresta> listas_adj[MAXV];
 
 	int control;
@@ -172,7 +287,7 @@ int main()
 		switch (control)
 		{
 			case 1:
-				insert(itens,n_itens);
+				insert(itens,n_itens,root);
 				break;
 			case 2:
 				cout << "Quantas relações(Arestas) gostaria de inserir?" << endl;
